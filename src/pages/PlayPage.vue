@@ -9,6 +9,11 @@
    const fieldColumn = new Array(column).fill(0);
    field[i] = fieldColumn;
  }
+
+ field[0][0] = 1;
+ field[1][0] = 1;
+ field[2][0] = 1;
+ field[3][0] = 1;
 </script>
 
 <template>
@@ -20,11 +25,12 @@
       <tr
         v-for="(row, y) in field"
         :key="y">
+        <!-- テトリスのフィールドの各マス目にその状態を描画する (0: 空白, 1: I-テトリミノ, etc.) -->
         <td
           class="block"
           v-for="(col, x) in row"
           :key="() => `${x}${y}`"
-        />
+        >{{ col }}</td>
       </tr>
     </table>
   </div>
