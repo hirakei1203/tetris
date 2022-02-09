@@ -16,27 +16,8 @@
  field[3][0] = 1;
 
 const classBlockColor = (x: number, y: number): string => {
-  const type = field[y][x];
-  if (type > 0){
-    switch (type) {
-      case 1:
-        return "block-i";
-      case 2:
-        return "block-o";
-      case 3:
-        return "block-s";
-      case 4:
-        return "block-z";
-      case 5:
-        return "block-j";
-      case 6:
-        return "block-l";
-      case 7:
-        return "block-t";
-      default:
-        return "";
-    }
-  }
+  
+  
 }
 
 </script>
@@ -56,7 +37,7 @@ const classBlockColor = (x: number, y: number): string => {
           v-for="(col, x) in row"
           :key="() => `${x}${y}`"
           v-bind:class="classBlockColor(x, y)"
-        >{{ col }}</td>
+        />
       </tr>
     </table>
   </div>
