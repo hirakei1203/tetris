@@ -1,9 +1,45 @@
 <script lang="ts" setup>
+import { reactive } from "vue";
+import { Tetromino, TETROMINO_TYPE} from '../common/Tetromino' ;
+import { Field } from '../common/Field';
+
+let staticField = new Field();
+const tetris = reactive({
+  field: new Field(),
+});
+const tetromino = reactive({
+  current: Tetromino.random(),
+  position: {x:3, y:0},
+})
+
+const classBlockColor = (_x: number, _y: number): string => {
+  const type = tetris.field.data[_y][_x];
+  if(type > 0){
+    return Tetromino.id(type as TETROMINO_TYPE);
+  }
+
+  const { x, y } = tetromino.position;
+  const { data } = tetromino.current;
  
-const classBlockColor = (x: number, y: number): string => {
-  
-  
+   if (y <= _y && _y < y + data.length) {
+     const cols = data[_y - y];
+     if (x <= _x && _x < x + cols.length) {
+       if (cols[_x - x] > 0) {
+         return Tetromino.id(cols[_x - x] as TETROMINO_TYPE);
+       }
+     }
+   }
+
+   return "";
 }
+
+setInterval(() => {
+   tetris.field = Field.deepCopy(staticField);
+ 
+   tetromino.position.y++;
+   tetris.field.update(tetromino.current.data, tetromino.position);
+ }, 1 * 1000);
+ tetris.field.update(tetromino.current.data, tetromino.position);
 
 </script>
 
@@ -14,7 +50,7 @@ const classBlockColor = (x: number, y: number): string => {
   <div class="container">
     <table class="field" style="border-collapse: collapse">
       <tr
-        v-for="(row, y) in field"
+        v-for="(row, y) in tetris.field.data"
         :key="y">
         <!-- テトリスのフィールドの各マス目にその状態を描画する (0: 空白, 1: I-テトリミノ, etc.) -->
         <td
