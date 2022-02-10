@@ -1,20 +1,5 @@
 <script lang="ts" setup>
- // テトリスのフィールドを定義するコード
- const row = 20;
- const column = 10;
  
- const field = new Array(row);
- 
- for (let i = 0; i < row; i++) {
-   const fieldColumn = new Array(column).fill(0);
-   field[i] = fieldColumn;
- }
-
- field[0][0] = 1;
- field[1][0] = 1;
- field[2][0] = 1;
- field[3][0] = 1;
-
 const classBlockColor = (x: number, y: number): string => {
   
   
