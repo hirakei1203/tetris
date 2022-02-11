@@ -33,13 +33,38 @@ const classBlockColor = (_x: number, _y: number): string => {
    return "";
 }
 
+const canDropCurrentTertromino = (): boolean => {
+  const {x, y} = tetromino.position;
+  const droppedPosition = {x,y: y+1};
+
+  const data = tetromino.current.data;
+  return tetris.field.canMove(data, droppedPosition);
+} 
+
+const nextTetrisField = () => {
+  const data = tetromino.current.data;
+  const position = tetromino.position;
+
+  tetris.field.update(data, position);
+
+  staticField = new Field(tetris.field.data);
+  tetris.field = Field.deepCopy(staticField);
+
+  tetromino.current = Tetromino.random();
+  tetromino.position = {x:3,y:0};
+}
+
+
 setInterval(() => {
    tetris.field = Field.deepCopy(staticField);
- 
-   tetromino.position.y++;
-   tetris.field.update(tetromino.current.data, tetromino.position);
+
+  if(canDropCurrentTertromino()){
+    tetromino.position.y++;
+  }else{
+    nextTetrisField();
+  }
  }, 1 * 1000);
- tetris.field.update(tetromino.current.data, tetromino.position);
+tetris.field.update(tetromino.current.data, tetromino.position);
 
 </script>
 
