@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive } from "vue";
+import { reactive, onMounted, onBeforeUnmount } from "vue";
 import { Tetromino, TETROMINO_TYPE} from '../common/Tetromino' ;
 import { Field } from '../common/Field';
 
@@ -59,7 +59,27 @@ const nextTetrisField = () => {
   tetromino.position = {x:3,y:0};
 }
 
+const onKeyDown = (e: KeyboardEvent) => {
+  switch (e.key) {
+    case "Down":
+    case "ArrowDown":
+      if(canDropCurrentTertromino()){
+        tetromino.position.y++
+      }else{
+        nextTetrisField();
+      }
+      break;
+  }
+}
 
+onMounted(function() {
+  document.addEventListener('keydown', onKeyDown);
+})
+onBeforeUnmount(function(){
+  document.removeEventListener('keydown', onKeyDown)
+})
+
+// 毎秒、下に動けるか判断
 setInterval(() => {
    tetris.field = Field.deepCopy(staticField);
 
