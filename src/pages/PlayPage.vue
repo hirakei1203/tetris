@@ -64,7 +64,8 @@ const onKeyDown = (e: KeyboardEvent) => {
     case "Down":
     case "ArrowDown":
       if(canDropCurrentTertromino()){
-        tetromino.position.y++
+        tetromino.position.y++;
+        resetDrop();
       }else{
         nextTetrisField();
       }
@@ -79,17 +80,25 @@ onBeforeUnmount(function(){
   document.removeEventListener('keydown', onKeyDown)
 })
 
-// 毎秒、下に動けるか判断
-setInterval(() => {
-   tetris.field = Field.deepCopy(staticField);
 
-  if(canDropCurrentTertromino()){
-    tetromino.position.y++;
-  }else{
-    nextTetrisField();
-  }
- }, 1 * 1000);
-tetris.field.update(tetromino.current.data, tetromino.position);
+const resetDropInterval = () => {
+   let intervalId = -1;
+   return () => {
+     if (intervalId !== -1) clearInterval(intervalId);
+     intervalId = setInterval(() => {
+      tetris.field = Field.deepCopy(staticField);
+
+      if(canDropCurrentTertromino()) {
+        tetromino.position.y++;
+      } else {
+        nextTetrisField();
+      }
+    }, 1 * 1000);
+   };
+ };
+
+const resetDrop = resetDropInterval();
+resetDrop();
 
 </script>
 
