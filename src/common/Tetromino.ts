@@ -95,5 +95,9 @@ export class Tetromino {
 
     return new Tetromino(type as TETROMINO_TYPE);
   }
+
+  static empty(): Tetromino {
+    return new Tetromino(0 as TETROMINO_TYPE);
+  }
 }
 
