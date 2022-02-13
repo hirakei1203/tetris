@@ -73,6 +73,18 @@ export class Tetromino {
     }
   }
 
+  static rotate(num: number, data: number[][]): number[][] {
+    let tetromino: number[][] = data;
+    for (let i = 0; i < num; i++) {
+      // 一行に存在する列を全て反転させて新たな二次元配列を作成する (90度回転させる)
+      tetromino = tetromino[0].map((_, index) =>
+        tetromino.map((row) => row[index]).reverse()
+      );
+    } 
+
+    return tetromino;
+  }
+
   get data(): number[][] {
     return tetrominos[this.type];
   }
@@ -82,6 +94,10 @@ export class Tetromino {
     const type = Math.floor(Math.random() * tetrominoTypes) + 1;
 
     return new Tetromino(type as TETROMINO_TYPE);
+  }
+
+  static empty(): Tetromino {
+    return new Tetromino(0 as TETROMINO_TYPE);
   }
 }
 
